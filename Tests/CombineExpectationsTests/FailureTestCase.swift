@@ -19,8 +19,10 @@ class FailureTestCase: XCTestCase {
     
     private var recordedFailures: [Failure] = []
     private var isRecordingFailures = false
-    
-    func assertFailure(_ prefixes: String..., file: StaticString = #file, line: UInt = #line, _ execute: () throws -> Void) rethrows {
+
+    @available(OSX 10.15, *)
+    func assertFailure(_ prefixes: String..., file: StaticString = #file, line: UInt = #line, _ execute: () throws -> Void)
+    rethrows {
         let recordedFailures = try recordingFailures(execute)
         if prefixes.isEmpty {
             if recordedFailures.isEmpty {
@@ -65,7 +67,8 @@ class FailureTestCase: XCTestCase {
         let result = recordedFailures
         return result
     }
-    
+
+    @available(OSX 10.15, *)
     private func assertMatch(recordedFailures: [Failure], expectedFailures: [Failure]) {
         let diff = expectedFailures.difference(from: recordedFailures).inferringMoves()
         for change in diff {
@@ -92,7 +95,8 @@ class FailureTestCase: XCTestCase {
     
     func testEmptyTest() {
     }
-    
+
+    @available(OSX 10.15, *)
     func testExpectedAnyFailure() {
         assertFailure {
             XCTFail("foo")
@@ -102,26 +106,30 @@ class FailureTestCase: XCTestCase {
             XCTFail("bar")
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testMissingAnyFailure() {
         assertFailure("No failure did happen") {
             assertFailure {
             }
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testExpectedFailure() {
         assertFailure("failed - foo") {
             XCTFail("foo")
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testExpectedFailureMatchesOnPrefix() {
         assertFailure("failed - foo") {
             XCTFail("foobarbaz")
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testOrderOfExpectedFailureIsIgnored() {
         assertFailure("failed - foo", "failed - bar") {
             XCTFail("foo")
@@ -132,7 +140,8 @@ class FailureTestCase: XCTestCase {
             XCTFail("bar")
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testExpectedFailureCanBeRepeated() {
         assertFailure("failed - foo", "failed - foo", "failed - bar") {
             XCTFail("foo")
@@ -140,7 +149,8 @@ class FailureTestCase: XCTestCase {
             XCTFail("foo")
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testExactNumberOfRepetitionIsRequired() {
         assertFailure("Failure did not happen: failed - foo") {
             assertFailure("failed - foo", "failed - foo") {
@@ -155,14 +165,16 @@ class FailureTestCase: XCTestCase {
             }
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testUnexpectedFailure() {
         assertFailure("Failure did not happen: failed - foo") {
             assertFailure("failed - foo") {
             }
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testMissedFailure() {
         assertFailure("failed - bar") {
             assertFailure("failed - foo") {

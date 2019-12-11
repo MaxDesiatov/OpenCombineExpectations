@@ -1,4 +1,4 @@
-import Combine
+import OpenCombine
 import XCTest
 
 /// A Combine subscriber which records all events published by a publisher.

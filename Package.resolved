@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "OpenCombine",
+        "repositoryURL": "https://github.com/broadwaylamb/OpenCombine.git",
+        "state": {
+          "branch": null,
+          "revision": "899a04bb3fc88a855196a0ce90d52b6f1cf5e04c",
+          "version": "0.7.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

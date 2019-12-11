@@ -1,5 +1,5 @@
 import XCTest
-import Combine
+import OpenCombine
 import CombineExpectations
 
 /// Tests for sample code in documentation
@@ -10,8 +10,7 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayPublisherCompletesWithSuccess() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         let completion = try wait(for: recorder.completion, timeout: 0.1)
         if case let .failure(error) = completion {
             XCTFail("Unexpected error \(error)")
@@ -20,6 +19,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notCompleted
+    @available(OSX 10.15, *)
     func testCompletionTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -35,14 +35,14 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayPublisherPublishesArrayElements() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         let elements = try wait(for: recorder.elements, timeout: 0.1)
         XCTAssertEqual(elements, ["foo", "bar", "baz"])
     }
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notCompleted
+    @available(OSX 10.15, *)
     func testElementsTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -69,12 +69,12 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayPublisherFinishesWithoutError() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         try wait(for: recorder.finished, timeout: 0.1)
     }
     
     // FAIL: Asynchronous wait failed
+    @available(OSX 10.15, *)
     func testFinishedTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             let publisher = PassthroughSubject<String, Never>()
@@ -105,6 +105,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Fulfilled inverted expectation
     // FAIL: Caught error MyError
+    @available(OSX 10.15, *)
     func testInvertedFinishedError() throws {
         try assertFailure("Fulfilled inverted expectation") {
             do {
@@ -121,8 +122,7 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayPublisherPublishesLastElementLast() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         if let element = try wait(for: recorder.last, timeout: 0.1) {
             XCTAssertEqual(element, "baz")
         } else {
@@ -132,6 +132,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notCompleted
+    @available(OSX 10.15, *)
     func testLastTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -158,8 +159,7 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayOfTwoElementsPublishesElementsInOrder() throws {
-        let publisher = ["foo", "bar"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar"].publisher.record()
         
         var element = try wait(for: recorder.next(), timeout: 0.1)
         XCTAssertEqual(element, "foo")
@@ -170,6 +170,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notEnoughElements
+    @available(OSX 10.15, *)
     func testNextTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -213,6 +214,7 @@ class DocumentationTests: FailureTestCase {
     }
     
     // FAIL: Fulfilled inverted expectation
+    @available(OSX 10.15, *)
     func testInvertedNextTooEarly() throws {
         try assertFailure("Fulfilled inverted expectation") {
             let publisher = PassthroughSubject<String, Never>()
@@ -224,6 +226,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Fulfilled inverted expectation
     // FAIL: Caught error MyError
+    @available(OSX 10.15, *)
     func testInvertedNextError() throws {
         try assertFailure("Fulfilled inverted expectation") {
             do {
@@ -240,8 +243,7 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayOfThreeElementsPublishesTwoThenOneElement() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         
         var elements = try wait(for: recorder.next(2), timeout: 0.1)
         XCTAssertEqual(elements, ["foo", "bar"])
@@ -252,6 +254,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notEnoughElements
+    @available(OSX 10.15, *)
     func testNextCountTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -292,13 +295,13 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayOfThreeElementsPublishesTwoFirstElementsWithoutError() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         let elements = try wait(for: recorder.prefix(2), timeout: 0.1)
         XCTAssertEqual(elements, ["foo", "bar"])
     }
     
     // FAIL: Asynchronous wait failed
+    @available(OSX 10.15, *)
     func testPrefixTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             let publisher = PassthroughSubject<String, Never>()
@@ -333,6 +336,7 @@ class DocumentationTests: FailureTestCase {
     }
     
     // FAIL: Fulfilled inverted expectation
+    @available(OSX 10.15, *)
     func testInvertedPrefixTooEarly() throws {
         try assertFailure("Fulfilled inverted expectation") {
             let publisher = PassthroughSubject<String, Never>()
@@ -346,6 +350,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Fulfilled inverted expectation
     // FAIL: Caught error MyError
+    @available(OSX 10.15, *)
     func testInvertedPrefixError() throws {
         try assertFailure("Fulfilled inverted expectation") {
             do {
@@ -363,8 +368,7 @@ class DocumentationTests: FailureTestCase {
     
     // SUCCESS: no timeout, no error
     func testArrayPublisherRecording() throws {
-        let publisher = ["foo", "bar", "baz"].publisher
-        let recorder = publisher.record()
+        let recorder = ["foo", "bar", "baz"].publisher.record()
         let recording = try wait(for: recorder.recording, timeout: 0.1)
         XCTAssertEqual(recording.output, ["foo", "bar", "baz"])
         if case let .failure(error) = recording.completion {
@@ -374,6 +378,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notCompleted
+    @available(OSX 10.15, *)
     func testRecordingTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {
@@ -397,6 +402,7 @@ class DocumentationTests: FailureTestCase {
     
     // FAIL: Asynchronous wait failed
     // FAIL: Caught error RecordingError.notCompleted
+    @available(OSX 10.15, *)
     func testSingleTimeout() throws {
         try assertFailure("Asynchronous wait failed") {
             do {

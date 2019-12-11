@@ -1,5 +1,5 @@
 import XCTest
-import Combine
+import OpenCombine
 import Foundation
 import CombineExpectations
 
@@ -9,6 +9,7 @@ import CombineExpectations
 /// Our goal is to make it clear that the problem with wacky publishers is
 /// wacky publishers, not this library.
 class WackySubscriberTests: FailureTestCase {
+    @available(OSX 10.15, *)
     func testDoubleSubscriptionPublisher() throws {
         struct DoubleSubscriptionPublisher<Base: Publisher>: Publisher {
             typealias Output = Base.Output
@@ -25,6 +26,7 @@ class WackySubscriberTests: FailureTestCase {
         }
     }
     
+    @available(OSX 10.15, *)
     func testCompletionBeforeSubscriptionPublisher() throws {
         struct CompletionBeforeSubscriptionPublisher: Publisher {
             typealias Output = Never
@@ -38,7 +40,8 @@ class WackySubscriberTests: FailureTestCase {
             _ = publisher.record()
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testInputBeforeSubscriptionPublisher() throws {
         struct InputBeforeSubscriptionPublisher: Publisher {
             typealias Output = String
@@ -52,7 +55,8 @@ class WackySubscriberTests: FailureTestCase {
             _ = publisher.record()
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testInputAfterCompletionPublisher() throws {
         struct InputAfterCompletionPublisher<Base: Publisher>: Publisher
             where Base.Output == String
@@ -70,7 +74,8 @@ class WackySubscriberTests: FailureTestCase {
             _ = publisher.record()
         }
     }
-    
+
+    @available(OSX 10.15, *)
     func testDoubleCompletionPublisher() throws {
         struct DoubleCompletionPublisher<Base: Publisher>: Publisher {
             typealias Output = Base.Output

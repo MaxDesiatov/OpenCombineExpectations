@@ -1,5 +1,5 @@
 import XCTest
-import Combine
+import OpenCombine
 import Foundation
 import CombineExpectations
 
